@@ -1,0 +1,45 @@
+using GreenLocator.Data;
+using GreenLocator.Models;
+
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace GreenLocator.Pages
+{
+    public class ChatModel : PageModel
+    {
+        private readonly ApplicationDbContext _context;
+        public ChatModel(ApplicationDbContext context)
+        {
+            _context = context ?? throw new ArgumentNullException();
+        }
+
+    public List<SelectListItem>? Options { get; set; }
+
+        public void OnGet()
+        {
+            if (User.Identity == null)
+            {
+                RedirectToPage("Error");
+            }
+            else
+            {
+                //AspNetUser current = _context.Users.First(x => x.UserName == Users.Identity.Name);
+                //GenerateMatchList(current);
+            }
+        }
+
+        public void GenerateMatchList(AspNetUser current)
+        {
+            /*
+            Options = _context.AspNetUsers.Where(usr => usr.City == current.City && usr.Street == current.Street
+                                && usr.House == current.House && usr.ThingToShare == current.ThingToShare
+                                && usr.ShareStatus != current.ShareStatus && current.Id != usr.Id).
+                           Select(x => new SelectListItem
+                           {
+                               Value = x.UserName,
+                               Text = x.UserName
+                           }).ToList(); */
+        }
+    }
+}
