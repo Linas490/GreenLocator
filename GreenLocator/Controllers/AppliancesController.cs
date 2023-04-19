@@ -10,87 +10,87 @@ using GreenLocator.Models;
 
 namespace GreenLocator.Controllers
 {
-    public class UsersController : Controller
+    public class AppliancesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public UsersController(ApplicationDbContext context)
+        public AppliancesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Appliances
         public async Task<IActionResult> Index()
         {
-              return _context.User != null ? 
-                          View(await _context.User.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.User'  is null.");
+              return _context.Appliance != null ? 
+                          View(await _context.Appliance.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Appliance'  is null.");
         }
 
-        // GET: Users/Details/5
+        // GET: Appliances/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.User == null)
+            if (id == null || _context.Appliance == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+            var appliance = await _context.Appliance
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (appliance == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(appliance);
         }
 
-        // GET: Users/Create
+        // GET: Appliances/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Appliances/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,email,City,Street,House,ShareStatus")] User user)
+        public async Task<IActionResult> Create([Bind("Id,Category,ApplianceUserId,Description")] Appliance appliance)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(user);
+                _context.Add(appliance);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(appliance);
         }
 
-        // GET: Users/Edit/5
+        // GET: Appliances/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.User == null)
+            if (id == null || _context.Appliance == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
+            var appliance = await _context.Appliance.FindAsync(id);
+            if (appliance == null)
             {
                 return NotFound();
             }
-            return View(user);
+            return View(appliance);
         }
 
-        // POST: Users/Edit/5
+        // POST: Appliances/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,email,City,Street,House,ShareStatus")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Category,ApplianceUserId,Description")] Appliance appliance)
         {
-            if (id != user.UserId)
+            if (id != appliance.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace GreenLocator.Controllers
             {
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(appliance);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserId))
+                    if (!ApplianceExists(appliance.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace GreenLocator.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return View(appliance);
         }
 
-        // GET: Users/Delete/5
+        // GET: Appliances/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.User == null)
+            if (id == null || _context.Appliance == null)
             {
                 return NotFound();
             }
 
-            var user = await _context.User
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+            var appliance = await _context.Appliance
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (appliance == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(appliance);
         }
 
-        // POST: Users/Delete/5
+        // POST: Appliances/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.User == null)
+            if (_context.Appliance == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.User'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Appliance'  is null.");
             }
-            var user = await _context.User.FindAsync(id);
-            if (user != null)
+            var appliance = await _context.Appliance.FindAsync(id);
+            if (appliance != null)
             {
-                _context.User.Remove(user);
+                _context.Appliance.Remove(appliance);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool ApplianceExists(int id)
         {
-          return (_context.User?.Any(e => e.UserId == id)).GetValueOrDefault();
+          return (_context.Appliance?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

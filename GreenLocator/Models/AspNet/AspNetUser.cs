@@ -30,6 +30,11 @@ namespace GreenLocator.Models
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
 
+        public string City { get; set; }
+        public string Street { get; set; }
+        public string House { get; set; }
+        public int ShareStatus { get; set; } = 0;
+
         public virtual ICollection<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual ICollection<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual ICollection<AspNetUserToken> AspNetUserTokens { get; set; }

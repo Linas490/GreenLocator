@@ -10,87 +10,87 @@ using GreenLocator.Models;
 
 namespace GreenLocator.Controllers
 {
-    public class ShareablesController : Controller
+    public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ShareablesController(ApplicationDbContext context)
+        public PostsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Shareables
+        // GET: Posts
         public async Task<IActionResult> Index()
         {
-              return _context.Shareable != null ? 
-                          View(await _context.Shareable.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Shareable'  is null.");
+              return _context.Posts != null ? 
+                          View(await _context.Posts.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDbContext.Posts'  is null.");
         }
 
-        // GET: Shareables/Details/5
+        // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Shareable == null)
+            if (id == null || _context.Posts == null)
             {
                 return NotFound();
             }
 
-            var shareable = await _context.Shareable
+            var post = await _context.Posts
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (shareable == null)
+            if (post == null)
             {
                 return NotFound();
             }
 
-            return View(shareable);
+            return View(post);
         }
 
-        // GET: Shareables/Create
+        // GET: Posts/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Shareables/Create
+        // POST: Posts/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CategoryId,UserId,Describtion,Rating")] Shareable shareable)
+        public async Task<IActionResult> Create([Bind("Id,isActive,ApplianceId,Price,PostDate,FullAddress,ApplianceOwner,Description,isReported,UnderMaintenance")] Post post)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(shareable);
+                _context.Add(post);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(shareable);
+            return View(post);
         }
 
-        // GET: Shareables/Edit/5
+        // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Shareable == null)
+            if (id == null || _context.Posts == null)
             {
                 return NotFound();
             }
 
-            var shareable = await _context.Shareable.FindAsync(id);
-            if (shareable == null)
+            var post = await _context.Posts.FindAsync(id);
+            if (post == null)
             {
                 return NotFound();
             }
-            return View(shareable);
+            return View(post);
         }
 
-        // POST: Shareables/Edit/5
+        // POST: Posts/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CategoryId,UserId,Describtion,Rating")] Shareable shareable)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,isActive,ApplianceId,Price,PostDate,FullAddress,ApplianceOwner,Description,isReported,UnderMaintenance")] Post post)
         {
-            if (id != shareable.Id)
+            if (id != post.Id)
             {
                 return NotFound();
             }
@@ -99,12 +99,12 @@ namespace GreenLocator.Controllers
             {
                 try
                 {
-                    _context.Update(shareable);
+                    _context.Update(post);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ShareableExists(shareable.Id))
+                    if (!PostExists(post.Id))
                     {
                         return NotFound();
                     }
@@ -115,49 +115,49 @@ namespace GreenLocator.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(shareable);
+            return View(post);
         }
 
-        // GET: Shareables/Delete/5
+        // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Shareable == null)
+            if (id == null || _context.Posts == null)
             {
                 return NotFound();
             }
 
-            var shareable = await _context.Shareable
+            var post = await _context.Posts
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (shareable == null)
+            if (post == null)
             {
                 return NotFound();
             }
 
-            return View(shareable);
+            return View(post);
         }
 
-        // POST: Shareables/Delete/5
+        // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Shareable == null)
+            if (_context.Posts == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Shareable'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.Posts'  is null.");
             }
-            var shareable = await _context.Shareable.FindAsync(id);
-            if (shareable != null)
+            var post = await _context.Posts.FindAsync(id);
+            if (post != null)
             {
-                _context.Shareable.Remove(shareable);
+                _context.Posts.Remove(post);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ShareableExists(int id)
+        private bool PostExists(int id)
         {
-          return (_context.Shareable?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

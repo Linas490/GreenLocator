@@ -10,7 +10,12 @@ namespace GreenLocator.Data
             : base(options)
         {
         }
-        public DbSet<GreenLocator.Models.Shareable>? Shareable { get; set; }
-        public DbSet<GreenLocator.Models.User>? User { get; set; }
+        public DbSet<GreenLocator.Models.Appliance>? Appliance { get; set; }
+        public DbSet<GreenLocator.Models.Post>? Posts { get; set; }
+        public DbSet<GreenLocator.Models.Review>? Reviews { get; set; }
+        public DbSet<GreenLocator.Models.Rating>? Ratings { get; set; }
+        //public DbSet<GreenLocator.Models.AspNetUser>? Users { get; set; }
+
+        
     }
 }

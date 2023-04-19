@@ -1,10 +1,21 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
+using System.ComponentModel.DataAnnotations;
 
 namespace GreenLocator.Models
 {
-    public enum Category 
+    public class Category
     {
-        Skalbyklė = 0,
-        Orkaitė
+        [Key]
+        public int Id { get; set; }
+        public string Title { get; set; }
+
+        public Category(int Id, string Title)
+        {
+            this.Id = Id;
+            this.Title = Title;
+        }
+
+        public List<Category> categories = new List<Category>() { new Category(0, "Skalbyklė"), new Category(0, "Orkaitė") };
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace GreenLocator.Data.Migrations
+namespace GreenLocator.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -22,7 +22,7 @@ namespace GreenLocator.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("GreenLocator.Models.Shareable", b =>
+            modelBuilder.Entity("GreenLocator.Models.Appliance", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,52 +30,146 @@ namespace GreenLocator.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("ApplianceUserId")
+                        .HasColumnType("int");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Describtion")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Rating")
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Appliance");
+                });
+
+            modelBuilder.Entity("GreenLocator.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("GreenLocator.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ApplianceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ApplianceOwner")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FullAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("PostDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("UnderMaintenance")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("isReported")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Posts");
+                });
+
+            modelBuilder.Entity("GreenLocator.Models.Rating", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("PostId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("PostId");
 
-                    b.ToTable("Shareable");
+                    b.ToTable("Ratings");
                 });
 
-            modelBuilder.Entity("GreenLocator.Models.User", b =>
+            modelBuilder.Entity("GreenLocator.Models.Report", b =>
                 {
-                    b.Property<int>("UserId")
+                    b.Property<int>("ReportId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReportId"), 1L, 1);
 
-                    b.Property<string>("City")
+                    b.Property<string>("ApplianceId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("House")
+                    b.Property<int?>("PostId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ShareStatus")
+                    b.Property<string>("ReportComment")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Street")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("ReportId");
 
-                    b.Property<string>("email")
-                        .HasColumnType("nvarchar(max)");
+                    b.HasIndex("PostId");
 
-                    b.HasKey("UserId");
+                    b.ToTable("Report");
+                });
 
-                    b.ToTable("User");
+            modelBuilder.Entity("GreenLocator.Models.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -280,13 +374,36 @@ namespace GreenLocator.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("GreenLocator.Models.Shareable", b =>
+            modelBuilder.Entity("GreenLocator.Models.Appliance", b =>
                 {
-                    b.HasOne("GreenLocator.Models.User", null)
-                        .WithMany("UserShareables")
-                        .HasForeignKey("UserId")
+                    b.HasOne("GreenLocator.Models.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("GreenLocator.Models.Rating", b =>
+                {
+                    b.HasOne("GreenLocator.Models.Post", null)
+                        .WithMany("ApplianceRatingList")
+                        .HasForeignKey("PostId");
+                });
+
+            modelBuilder.Entity("GreenLocator.Models.Report", b =>
+                {
+                    b.HasOne("GreenLocator.Models.Post", null)
+                        .WithMany("Reports")
+                        .HasForeignKey("PostId");
+                });
+
+            modelBuilder.Entity("GreenLocator.Models.Review", b =>
+                {
+                    b.HasOne("GreenLocator.Models.Post", null)
+                        .WithMany("Reviews")
+                        .HasForeignKey("PostId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -340,9 +457,13 @@ namespace GreenLocator.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GreenLocator.Models.User", b =>
+            modelBuilder.Entity("GreenLocator.Models.Post", b =>
                 {
-                    b.Navigation("UserShareables");
+                    b.Navigation("ApplianceRatingList");
+
+                    b.Navigation("Reports");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }
