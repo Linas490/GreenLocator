@@ -5,9 +5,9 @@ namespace GreenLocator.Models
     public class Post
     {
         [Key]
-        public int Id { get; set; }
+        public string Id { get; set; }
         public bool isActive { get; set; }
-        public int ApplianceId { get; set; }
+        public string ApplianceId { get; set; }
         public int Price { get; set; }
         public DateTime PostDate { get; set; }
         public string FullAddress { get; set; } = string.Empty;

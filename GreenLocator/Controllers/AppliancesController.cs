@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GreenLocator.Data;
 using GreenLocator.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GreenLocator.Controllers
 {
@@ -20,6 +21,7 @@ namespace GreenLocator.Controllers
         }
 
         // GET: Appliances
+        [Authorize]
         public async Task<IActionResult> Index()
         {
               return _context.Appliance != null ? 
@@ -28,7 +30,7 @@ namespace GreenLocator.Controllers
         }
 
         // GET: Appliances/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string? id)
         {
             if (id == null || _context.Appliance == null)
             {
@@ -36,7 +38,7 @@ namespace GreenLocator.Controllers
             }
 
             var appliance = await _context.Appliance
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (appliance == null)
             {
                 return NotFound();
@@ -48,6 +50,7 @@ namespace GreenLocator.Controllers
         // GET: Appliances/Create
         public IActionResult Create()
         {
+            Console.WriteLine("Hello pipec");
             return View();
         }
 
@@ -56,19 +59,27 @@ namespace GreenLocator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Category,ApplianceUserId,Description")] Appliance appliance)
+        public async Task<IActionResult> Create([Bind("Category,Description,Title,Price,ImgUrl")] Appliance appliance)
         {
-            if (ModelState.IsValid)
+            Console.WriteLine(appliance.Category.ToString());
+            appliance.Id = Guid.NewGuid().ToString();
+            appliance.ApplianceUserId = Guid.NewGuid().ToString();
+            Console.WriteLine("ImgUrl: " + appliance.ImgUrl);
+            Console.WriteLine("Title: " + appliance.Title);
+            Console.WriteLine("Price: " + appliance.Price.ToString());
+            if (true)
             {
+                Console.WriteLine("IsValid");
                 _context.Add(appliance);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            Console.WriteLine("prie return");
             return View(appliance);
         }
 
         // GET: Appliances/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string? id)
         {
             if (id == null || _context.Appliance == null)
             {
@@ -88,14 +99,14 @@ namespace GreenLocator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Category,ApplianceUserId,Description")] Appliance appliance)
+        public async Task<IActionResult> Edit(string id, [Bind("Category, Title, Price, Description")] Appliance appliance)
         {
-            if (id != appliance.Id)
+            if (!id.Equals(appliance.Id))
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (true)
             {
                 try
                 {
@@ -119,7 +130,7 @@ namespace GreenLocator.Controllers
         }
 
         // GET: Appliances/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string? id)
         {
             if (id == null || _context.Appliance == null)
             {
@@ -127,7 +138,7 @@ namespace GreenLocator.Controllers
             }
 
             var appliance = await _context.Appliance
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (appliance == null)
             {
                 return NotFound();
@@ -139,7 +150,7 @@ namespace GreenLocator.Controllers
         // POST: Appliances/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Appliance == null)
             {
@@ -155,9 +166,9 @@ namespace GreenLocator.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ApplianceExists(int id)
+        private bool ApplianceExists(string id)
         {
-          return (_context.Appliance?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Appliance?.Any(e => e.Id.Equals(id))).GetValueOrDefault();
         }
     }
 }

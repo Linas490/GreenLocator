@@ -36,7 +36,7 @@ namespace GreenLocator.Controllers
             }
 
             var post = await _context.Posts
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Id.Equals(id));
             if (post == null)
             {
                 return NotFound();
@@ -90,7 +90,7 @@ namespace GreenLocator.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,isActive,ApplianceId,Price,PostDate,FullAddress,ApplianceOwner,Description,isReported,UnderMaintenance")] Post post)
         {
-            if (id != post.Id)
+            if (!id.Equals(post.Id))
             {
                 return NotFound();
             }
@@ -104,7 +104,7 @@ namespace GreenLocator.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PostExists(post.Id))
+                    if (!PostExists(Int32.Parse(post.Id)))
                     {
                         return NotFound();
                     }
@@ -127,7 +127,7 @@ namespace GreenLocator.Controllers
             }
 
             var post = await _context.Posts
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m =>m.Id.Equals(id));
             if (post == null)
             {
                 return NotFound();
@@ -157,7 +157,7 @@ namespace GreenLocator.Controllers
 
         private bool PostExists(int id)
         {
-          return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Posts?.Any(e => e.Id.Equals(id))).GetValueOrDefault();
         }
     }
 }
