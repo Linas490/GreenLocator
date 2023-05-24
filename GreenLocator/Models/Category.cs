@@ -1,10 +1,9 @@
-﻿using System.Collections;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GreenLocator.Models
 {
-    public enum Category 
+    public enum Category
     {
-        Skalbyklė = 0,
-        Orkaitė
+        Skalbykle, Orkaite
     }
 }
