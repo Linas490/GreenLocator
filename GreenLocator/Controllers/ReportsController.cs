@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using GreenLocator.Data;
 using GreenLocator.Models;
 using GreenLocator.Logic;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace GreenLocator.Controllers
 {
@@ -21,6 +23,7 @@ namespace GreenLocator.Controllers
         }
 
         // GET: Reports
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
               return _context.Report != null ? 
@@ -69,7 +72,7 @@ namespace GreenLocator.Controllers
             {
                 _context.Add(report);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Appliances");
             }
             return View(report);
         }
