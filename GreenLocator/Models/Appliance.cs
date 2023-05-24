@@ -19,9 +19,5 @@ namespace GreenLocator.Models
         public int Price { get; set; }
 
         public static List<Appliance> Appliances = new List<Appliance>();
-        public Appliance()
-        {
-            
-        }
     }
 }

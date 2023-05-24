@@ -22,11 +22,15 @@ namespace GreenLocator.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> DeleteAppliance(string id)
+        {
+            return RedirectToAction("Delete", "Appliances", new { id });
+        }
+
         // GET: Reports
-        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
-              return _context.Report != null ? 
+            return _context.Report != null ? 
                           View(await _context.Report.ToListAsync()) :
                           Problem("Entity set 'ApplicationDbContext.Report'  is null.");
         }
@@ -64,6 +68,7 @@ namespace GreenLocator.Controllers
         public async Task<IActionResult> Create([Bind("ReportComment,ReportCategory")] Report report)
         {
             report.ReportId = Guid.NewGuid().ToString();
+            report.ReportStatus = ReportStatus.Unseen;
             report.ApplianceId = Reporter.id;
             Console.WriteLine("zonggaa: " + Reporter.id);
 /*            Console.WriteLine("applianceId: " + applianceId);*/

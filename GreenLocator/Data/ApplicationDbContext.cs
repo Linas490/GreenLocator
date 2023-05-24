@@ -14,7 +14,7 @@ namespace GreenLocator.Data
         public DbSet<Post>? Posts { get; set; }
         public DbSet<Review>? Reviews { get; set; }
         public DbSet<Rating>? Ratings { get; set; }
-        public DbSet<GreenLocator.Models.Report>? Report { get; set; }
+        public DbSet<Report>? Report { get; set; }
         //public DbSet<GreenLocator.Models.AspNetUser>? Users { get; set; }
 
         

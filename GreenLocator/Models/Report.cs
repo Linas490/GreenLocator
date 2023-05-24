@@ -10,5 +10,6 @@ namespace GreenLocator.Models
         public string UserId { get; set; }
         public String ReportComment { get; set; }
         public ReportCategory ReportCategory { get; set; }
+        public ReportStatus ReportStatus { get; set; }
     }
 }

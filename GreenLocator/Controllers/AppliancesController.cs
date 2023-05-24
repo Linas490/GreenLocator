@@ -49,11 +49,11 @@ namespace GreenLocator.Controllers
         }
 
         // GET: Appliances/Create
-/*        public IActionResult Create()
+        public IActionResult Create()
         {
             Console.WriteLine("Hello pipec");
             return View();
-        }*/
+        }
 
         public IActionResult GoToReport(string id)
         {
@@ -169,7 +169,16 @@ namespace GreenLocator.Controllers
             {
                 _context.Appliance.Remove(appliance);
             }
-            
+            var reports = _context.Report?.Where(r => r.ApplianceId.Equals(id));
+            if (reports != null)
+            {
+                foreach (var report in reports)
+                {
+                    report.ReportStatus = ReportStatus.Deleted;
+                }
+            }
+      
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
