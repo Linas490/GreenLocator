@@ -56,10 +56,11 @@ namespace GreenLocator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReportId,ApplianceId,UserId,ReportComment,ReportCategory")] Report report, string ApplianceId)
+        public async Task<IActionResult> Create([Bind("ReportId,ApplianceId,UserId,ReportComment,ReportCategory")] Report report, string applianceId)
         {
             report.ReportId = Guid.NewGuid().ToString();
             report.ApplianceId = "heheapplianceid";
+            Console.WriteLine("applianceId: " + applianceId);
             report.UserId = User.Identity.Name;
             if (ModelState.IsValid)
             {

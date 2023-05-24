@@ -29,6 +29,7 @@
             @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
+    <a asp-action="GoToReport" asp-route-id="@Model?.Id">Report</a>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
