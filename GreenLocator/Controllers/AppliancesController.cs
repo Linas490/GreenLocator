@@ -48,16 +48,16 @@ namespace GreenLocator.Controllers
         }
 
         // GET: Appliances/Create
-        public IActionResult Create()
+/*        public IActionResult Create()
         {
             Console.WriteLine("Hello pipec");
             return View();
-        }
+        }*/
 
         public IActionResult GoToReport(string id)
         {
             Console.WriteLine("mes ciiaaaa");
-            return RedirectToAction("Create", "Reports", id);
+            return RedirectToAction("Create", "Reports", new {applianceId = id.ToString()});
         }
 
         // POST: Appliances/Create
