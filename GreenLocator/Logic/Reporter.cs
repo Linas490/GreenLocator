@@ -1,7 +1,7 @@
 ﻿namespace GreenLocator.Logic
 {
-    public class Reporter
+    public static class Reporter
     {
-
+        public static string id = "";
     }
 }

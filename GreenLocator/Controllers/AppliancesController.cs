@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using GreenLocator.Data;
 using GreenLocator.Models;
 using Microsoft.AspNetCore.Authorization;
+using GreenLocator.Logic;
 
 namespace GreenLocator.Controllers
 {
@@ -57,7 +58,8 @@ namespace GreenLocator.Controllers
         public IActionResult GoToReport(string id)
         {
             Console.WriteLine("mes ciiaaaa");
-            return RedirectToAction("Create", "Reports", new {applianceId = id.ToString()});
+            Reporter.id = id;
+            return RedirectToAction("Create", "Reports");
         }
 
         // POST: Appliances/Create

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GreenLocator.Data;
 using GreenLocator.Models;
+using GreenLocator.Logic;
 
 namespace GreenLocator.Controllers
 {
@@ -49,7 +50,7 @@ namespace GreenLocator.Controllers
         public IActionResult Create(string applianceId)
         {
             Console.WriteLine(applianceId);
-            return View();
+            return View(new Report { ApplianceId = applianceId});
         }
 
         // POST: Reports/Create
@@ -57,13 +58,14 @@ namespace GreenLocator.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReportComment,ReportCategory")] Report report, string applianceId)
+        public async Task<IActionResult> Create([Bind("ReportComment,ReportCategory")] Report report)
         {
             report.ReportId = Guid.NewGuid().ToString();
-            report.ApplianceId = "heheapplianceid";
-            Console.WriteLine("applianceId: " + applianceId);
+            report.ApplianceId = Reporter.id;
+            Console.WriteLine("zonggaa: " + Reporter.id);
+/*            Console.WriteLine("applianceId: " + applianceId);*/
             report.UserId = User.Identity.Name;
-            if (ModelState.IsValid)
+            if (true)
             {
                 _context.Add(report);
                 await _context.SaveChangesAsync();
