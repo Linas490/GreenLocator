@@ -17,7 +17,7 @@ namespace GreenLocator.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.15")
+                .HasAnnotation("ProductVersion", "6.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -121,6 +121,9 @@ namespace GreenLocator.Migrations
 
                     b.Property<string>("PostId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ReportCategory")
+                        .HasColumnType("int");
 
                     b.Property<string>("ReportComment")
                         .IsRequired()
